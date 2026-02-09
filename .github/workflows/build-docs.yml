@@ -1,0 +1,56 @@
+name: Build Documentation
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual triggering
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -e .
+          playwright install chromium
+          playwright install-deps chromium
+
+      - name: Build knowledge base
+        run: |
+          docusynthetic build --output ./output
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: knowledge-base
+          path: output/
+          retention-days: 30
+
+      - name: Create release on changes
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Check if there are changes
+          if [ -f output/changelog.json ]; then
+            # Create a release with the knowledge base
+            gh release create "build-$(date +%Y%m%d-%H%M%S)" \
+              --title "Documentation Build $(date +%Y-%m-%d)" \
+              --notes-file output/CHANGELOG.md \
+              output/index.json \
+              output/changelog.json || true
+          fi
