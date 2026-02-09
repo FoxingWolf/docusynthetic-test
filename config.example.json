@@ -1,0 +1,13 @@
+{
+  "github_repo_owner": "veniceai",
+  "github_repo_name": "api-docs",
+  "github_branch": "main",
+  "github_docs_path": "",
+  "openapi_spec_url": "https://raw.githubusercontent.com/veniceai/api-docs/main/swagger.yaml",
+  "live_site_url": "https://docs.venice.ai",
+  "live_site_headless": true,
+  "output_dir": "./output",
+  "fetch_github": true,
+  "fetch_openapi": true,
+  "fetch_live_site": true
+}
