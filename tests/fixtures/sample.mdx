@@ -1,0 +1,57 @@
+---
+title: "Getting Started with Venice AI"
+description: "Learn how to use the Venice AI API"
+---
+
+# Getting Started with Venice AI
+
+Welcome to Venice AI! This guide will help you get started with our API.
+
+<Note>
+This is an important note about the API.
+</Note>
+
+<Steps>
+<Step title="Get your API key">
+Sign up and get your API key from the dashboard.
+</Step>
+
+<Step title="Make your first request">
+Use your API key to make your first API call.
+
+```python
+import requests
+response = requests.post("https://api.venice.ai/api/v1/chat/completions")
+```
+</Step>
+</Steps>
+
+## Authentication
+
+<Warning>
+Keep your API key secure!
+</Warning>
+
+Use the `Authorization` header with your API key.
+
+<CodeGroup>
+```python
+headers = {"Authorization": "Bearer YOUR_API_KEY"}
+```
+
+```javascript
+const headers = { "Authorization": "Bearer YOUR_API_KEY" };
+```
+</CodeGroup>
+
+## Next Steps
+
+<CardGroup>
+<Card title="API Reference" href="/api-reference">
+Explore all available endpoints
+</Card>
+
+<Card title="Models" href="/models">
+Learn about available models
+</Card>
+</CardGroup>
