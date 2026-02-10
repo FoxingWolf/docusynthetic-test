@@ -1,0 +1,38 @@
+# Cache
+.cache/
+*.pyc
+__pycache__/
+
+# Environment
+.env
+.venv/
+venv/
+ENV/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Knowledge base (optional - uncomment if you don't want to commit)
+# knowledge_base/
+# snapshots/
+
+# Logs
+*.log
