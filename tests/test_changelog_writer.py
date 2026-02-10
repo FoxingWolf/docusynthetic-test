@@ -90,7 +90,14 @@ def test_multiple_reports():
             old_snapshot_time=datetime(2024, 1, i),
             new_snapshot_time=datetime(2024, 1, i + 1),
             changes=[],
-            stats={"total_changes": 0},
+            stats={
+                "total_changes": 0,
+                "added": 0,
+                "modified": 0,
+                "removed": 0,
+                "breaking": 0,
+                "important": 0,
+            },
         )
         for i in range(1, 4)
     ]
