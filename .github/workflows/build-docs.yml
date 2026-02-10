@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # For creating releases
+      actions: read    # For reading workflow artifacts
     
     steps:
       - name: Checkout repository
