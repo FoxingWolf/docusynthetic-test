@@ -16,4 +16,4 @@ class BaseFetcher(ABC):
         Returns:
             List of DocumentContent objects.
         """
-        pass
+        ...
