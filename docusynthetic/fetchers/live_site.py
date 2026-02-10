@@ -2,7 +2,7 @@
 
 import hashlib
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 from playwright.async_api import async_playwright
 
@@ -164,7 +164,7 @@ class LiveSiteFetcher(BaseFetcher):
 
         return list(set(tags))  # Remove duplicates
 
-    async def _extract_category(self, page) -> str | None:
+    async def _extract_category(self, page) -> Optional[str]:
         """Extract category from the page.
 
         Args:
