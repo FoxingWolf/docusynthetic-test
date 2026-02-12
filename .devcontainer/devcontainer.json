@@ -2,7 +2,6 @@
   "name": "Venice KB Collector",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "features": {
-    "ghcr.io/devcontainers/features/node:2": {},
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "customizations": {
