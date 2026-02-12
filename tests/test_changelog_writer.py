@@ -1,9 +1,9 @@
 """Tests for changelog writer."""
 
 from datetime import datetime
-from pathlib import Path
-from venice_kb.diffing.models import DiffReport, ChangeEntry, ChangeType, SeverityLevel
+
 from venice_kb.diffing.changelog_writer import render_changelog_markdown
+from venice_kb.diffing.models import ChangeEntry, ChangeType, DiffReport, SeverityLevel
 
 
 def test_render_changelog_markdown():
@@ -28,9 +28,9 @@ def test_render_changelog_markdown():
         informational_changes=[],
         cosmetic_changes=[],
     )
-    
+
     markdown = render_changelog_markdown([report])
-    
+
     assert "# Venice API Docs Knowledge Base — Changelog" in markdown
     assert "2024-01-02" in markdown
     assert "Important Changes" in markdown

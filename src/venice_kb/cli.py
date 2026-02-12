@@ -1,15 +1,17 @@
 """CLI for Venice KB Collector using Typer."""
 
-import typer
 from pathlib import Path
+
+import typer
 from rich.console import Console
 from rich.table import Table
+
 from venice_kb import __version__
 from venice_kb.config import KB_OUTPUT_DIR, SNAPSHOT_DIR
-from venice_kb.utils.logging import logger, setup_logging
-from venice_kb.diffing.snapshot import get_latest_snapshot, list_snapshots, load_snapshot
-from venice_kb.diffing.differ import diff_snapshots
 from venice_kb.diffing.changelog_writer import write_changelog
+from venice_kb.diffing.differ import diff_snapshots
+from venice_kb.diffing.snapshot import get_latest_snapshot, list_snapshots, load_snapshot
+from venice_kb.utils.logging import setup_logging
 
 app = typer.Typer(
     name="venice-kb",
@@ -85,11 +87,11 @@ def build(
 ):
     """Build the full knowledge base from all sources."""
     setup_logging(log_level)
-    console.print(f"[bold blue]Building knowledge base...[/bold blue]")
+    console.print("[bold blue]Building knowledge base...[/bold blue]")
     console.print(f"Output: {output}")
     console.print(f"Snapshots: {snapshot_dir}")
     console.print(f"Sources: {sources}")
-    
+
     # TODO: Implement full build logic
     # This is a placeholder showing the structure
     console.print("[yellow]Note: Full build implementation pending[/yellow]")
@@ -148,34 +150,34 @@ def changelog(
     ),
 ):
     """Generate changelog from snapshots without rebuilding."""
-    console.print(f"[bold blue]Generating changelog from snapshots...[/bold blue]")
-    
+    console.print("[bold blue]Generating changelog from snapshots...[/bold blue]")
+
     snapshots = list_snapshots(snapshot_dir)
     if len(snapshots) < 2:
         console.print(
             f"[yellow]Need at least 2 snapshots to generate changelog. Found: {len(snapshots)}[/yellow]"
         )
         return
-    
+
     # Limit to last_n snapshots
     snapshots = snapshots[:last_n]
-    
+
     console.print(f"Processing {len(snapshots)} snapshots...")
-    
+
     # Generate diff reports
     reports = []
     for i in range(len(snapshots) - 1):
         new_snap = load_snapshot(snapshots[i])
         old_snap = load_snapshot(snapshots[i + 1])
-        
+
         console.print(f"Diffing {old_snap.snapshot_id} → {new_snap.snapshot_id}")
         report = diff_snapshots(old_snap, new_snap)
         reports.append(report)
-    
+
     # Write changelog
     if output is None:
         output = KB_OUTPUT_DIR / "CHANGELOG.md"
-    
+
     write_changelog(reports, output, format=format)
     console.print(f"[green]✓[/green] Changelog written to {output}")
 
@@ -192,19 +194,19 @@ def diff(
     ),
 ):
     """Compare two specific snapshots."""
-    console.print(f"[bold blue]Comparing snapshots...[/bold blue]")
-    
+    console.print("[bold blue]Comparing snapshots...[/bold blue]")
+
     old_snap = load_snapshot(old)
     new_snap = load_snapshot(new)
-    
+
     report = diff_snapshots(old_snap, new_snap)
-    
+
     console.print(f"\n[bold]Summary:[/bold] {report.summary}")
     console.print(f"Breaking: {len(report.breaking_changes)}")
     console.print(f"Important: {len(report.important_changes)}")
     console.print(f"Informational: {len(report.informational_changes)}")
     console.print(f"Cosmetic: {len(report.cosmetic_changes)}")
-    
+
     if output:
         write_changelog([report], output, format="both")
         console.print(f"[green]✓[/green] Report written to {output}")
@@ -239,35 +241,35 @@ def status(
 ):
     """Show current state - last build time, source versions, page count."""
     console.print("[bold blue]Venice KB Collector Status[/bold blue]\n")
-    
+
     # Check for latest snapshot
     latest = get_latest_snapshot(snapshot_dir)
-    
+
     if latest:
         table = Table(title="Latest Build")
         table.add_column("Property", style="cyan")
         table.add_column("Value", style="green")
-        
+
         table.add_row("Snapshot ID", latest.snapshot_id)
         table.add_row("Generated At", latest.generated_at.strftime("%Y-%m-%d %H:%M:%S UTC"))
         table.add_row("Total Pages", str(len(latest.page_manifest)))
-        
+
         # Source versions
         for key, value in latest.source_versions.items():
             table.add_row(f"Source: {key}", str(value))
-        
+
         console.print(table)
-        
+
         # Token stats
         total_tokens = sum(m.token_count for m in latest.page_manifest.values())
         avg_tokens = total_tokens // len(latest.page_manifest) if latest.page_manifest else 0
-        
-        console.print(f"\n[bold]Token Statistics:[/bold]")
+
+        console.print("\n[bold]Token Statistics:[/bold]")
         console.print(f"  Total tokens: {total_tokens:,}")
         console.print(f"  Average tokens per page: {avg_tokens:,}")
     else:
         console.print("[yellow]No snapshots found. Run 'venice-kb build' first.[/yellow]")
-    
+
     # List all snapshots
     snapshots = list_snapshots(snapshot_dir)
     if snapshots:

@@ -5,10 +5,10 @@ import hashlib
 
 def compute_hash(content: str) -> str:
     """Compute SHA-256 hash of content for fingerprinting.
-    
+
     Args:
         content: String content to hash
-        
+
     Returns:
         Hexadecimal hash string
     """
@@ -17,10 +17,10 @@ def compute_hash(content: str) -> str:
 
 def compute_file_hash(file_path: str) -> str:
     """Compute SHA-256 hash of a file.
-    
+
     Args:
         file_path: Path to file
-        
+
     Returns:
         Hexadecimal hash string
     """

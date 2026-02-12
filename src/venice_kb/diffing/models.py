@@ -1,8 +1,9 @@
 """Pydantic models for snapshots and change tracking."""
 
-from pydantic import BaseModel, Field
 from datetime import datetime
 from enum import Enum
+
+from pydantic import BaseModel, Field
 
 
 class ChangeType(str, Enum):
@@ -80,9 +81,7 @@ class KBSnapshot(BaseModel):
     source_versions: dict = Field(
         ..., description="{github_commit, openapi_hash, scrape_timestamp}"
     )
-    page_manifest: dict[str, PageMetadata] = Field(
-        ..., description="{path: PageMetadata}"
-    )
+    page_manifest: dict[str, PageMetadata] = Field(..., description="{path: PageMetadata}")
 
     def get_page_paths(self) -> set[str]:
         """Get all page paths in this snapshot."""

@@ -1,7 +1,8 @@
 """Shared test fixtures and configuration."""
 
-import pytest
 from pathlib import Path
+
+import pytest
 
 
 @pytest.fixture
@@ -61,19 +62,19 @@ def sample_swagger_snippet() -> dict:
                                     "properties": {
                                         "model": {"type": "string"},
                                         "messages": {"type": "array"},
-                                    }
+                                    },
                                 }
                             }
-                        }
+                        },
                     },
                     "responses": {
                         "200": {
                             "description": "Success",
                         }
-                    }
+                    },
                 }
             }
-        }
+        },
     }
 
 

@@ -1,23 +1,24 @@
 """Structured logging setup."""
 
 import logging
-import sys
+
 from rich.logging import RichHandler
+
 from venice_kb.config import LOG_LEVEL
 
 
 def setup_logging(level: str | None = None) -> logging.Logger:
     """Setup structured logging with rich formatting.
-    
+
     Args:
         level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
                If None, uses LOG_LEVEL from config
-        
+
     Returns:
         Configured logger instance
     """
     log_level = level or LOG_LEVEL
-    
+
     logging.basicConfig(
         level=log_level,
         format="%(message)s",
@@ -31,10 +32,10 @@ def setup_logging(level: str | None = None) -> logging.Logger:
             )
         ],
     )
-    
+
     logger = logging.getLogger("venice_kb")
     logger.setLevel(log_level)
-    
+
     return logger
 
 

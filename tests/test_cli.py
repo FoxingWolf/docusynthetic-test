@@ -1,6 +1,7 @@
 """Tests for CLI commands."""
 
 from typer.testing import CliRunner
+
 from venice_kb.cli import app
 
 runner = CliRunner()
