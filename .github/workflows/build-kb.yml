@@ -1,0 +1,66 @@
+name: Build Knowledge Base
+on:
+  schedule:
+    - cron: '0 6 * * 1'       # Weekly Monday 6am UTC
+  workflow_dispatch:            # Manual trigger
+    inputs:
+      force_refresh:
+        description: 'Bypass cache and re-fetch all sources'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -e '.[dev]'
+          playwright install chromium --with-deps
+
+      - name: Restore previous snapshot
+        uses: actions/cache@v4
+        with:
+          path: snapshots/
+          key: kb-snapshot-${{ github.run_number }}
+          restore-keys: kb-snapshot-
+
+      - name: Build Knowledge Base
+        env:
+          VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+        run: |
+          python -m venice_kb build \
+            --output ./knowledge_base \
+            --snapshot-dir ./snapshots \
+            ${{ github.event.inputs.force_refresh == 'true' && '--force-refresh' || '' }}
+
+      - name: Generate Changelog
+        run: |
+          python -m venice_kb changelog \
+            --snapshot-dir ./snapshots \
+            --output ./knowledge_base/CHANGELOG.md
+
+      - name: Upload KB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: venice-knowledge-base-${{ github.run_number }}
+          path: knowledge_base/
+
+      - name: Commit updated KB (if on main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "venice-kb-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add knowledge_base/ snapshots/
+          git diff --cached --quiet || git commit -m "chore: rebuild KB $(date -u +%Y-%m-%d)"
+          git push

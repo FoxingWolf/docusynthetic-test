@@ -1,0 +1,35 @@
+{
+  "name": "Venice KB Collector",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "features": {
+    "ghcr.io/devcontainers/features/node:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "ms-python.pylint",
+        "ms-playwright.playwright",
+        "redhat.vscode-yaml",
+        "tamasfe.even-better-toml"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.formatting.provider": "black",
+        "editor.formatOnSave": true
+      }
+    },
+    "jetbrains": {
+      "plugins": ["PythonCore", "org.toml.lang"]
+    }
+  },
+  "forwardPorts": [],
+  "postCreateCommand": "pip install -e '.[dev]' && playwright install chromium --with-deps",
+  "remoteEnv": {
+    "VENICE_API_KEY": "${localEnv:VENICE_API_KEY}",
+    "LLM_BASE_URL": "${localEnv:LLM_BASE_URL:https://api.venice.ai/api/v1}",
+    "LLM_MODEL": "${localEnv:LLM_MODEL:venice-uncensored}"
+  }
+}

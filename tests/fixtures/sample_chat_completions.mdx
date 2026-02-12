@@ -1,0 +1,65 @@
+---
+title: Chat Completions
+description: Create chat completion responses
+---
+
+# Chat Completions
+
+<Note>
+The chat completions endpoint is OpenAI-compatible and supports streaming.
+</Note>
+
+Generate chat completions using various LLM models.
+
+## Quick Start
+
+<CodeGroup>
+```python Python
+import openai
+
+client = openai.OpenAI(
+    base_url="https://api.venice.ai/api/v1",
+    api_key="YOUR_API_KEY"
+)
+
+response = client.chat.completions.create(
+    model="venice-uncensored",
+    messages=[
+        {"role": "user", "content": "Hello!"}
+    ]
+)
+```
+
+```javascript JavaScript
+const OpenAI = require('openai');
+
+const client = new OpenAI({
+    baseURL: 'https://api.venice.ai/api/v1',
+    apiKey: 'YOUR_API_KEY'
+});
+
+const response = await client.chat.completions.create({
+    model: 'venice-uncensored',
+    messages: [{role: 'user', content: 'Hello!'}]
+});
+```
+</CodeGroup>
+
+<Warning>
+Always keep your API key secure and never commit it to version control.
+</Warning>
+
+## Parameters
+
+<Tabs>
+<Tab title="Required">
+- `model`: The model to use
+- `messages`: Array of message objects
+</Tab>
+
+<Tab title="Optional">
+- `temperature`: Sampling temperature (0-2)
+- `max_tokens`: Maximum tokens to generate
+- `stream`: Enable streaming responses
+</Tab>
+</Tabs>
