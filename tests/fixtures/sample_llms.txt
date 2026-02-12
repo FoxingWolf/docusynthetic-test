@@ -1,0 +1,11 @@
+# Venice AI API Documentation
+
+> https://docs.venice.ai/overview/about-venice
+> https://docs.venice.ai/overview/getting-started
+> https://docs.venice.ai/overview/privacy
+> https://docs.venice.ai/api-reference/api-spec
+> https://docs.venice.ai/api-reference/endpoint/chat/completions
+> https://docs.venice.ai/api-reference/endpoint/image/generate
+> https://docs.venice.ai/models/overview
+> https://docs.venice.ai/models/text
+> https://docs.venice.ai/overview/guides/openai-migration
