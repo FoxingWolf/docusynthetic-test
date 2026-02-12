@@ -1,6 +1,8 @@
 {
   "name": "Venice KB Collector",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  // Note: Node.js is NOT needed - this is a Python-only project.
+  // Playwright handles browser dependencies via postCreateCommand.
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
